@@ -20,28 +20,29 @@ def drawMaze(pointer):
         pointer.pendown()
 
     def wall(distance):
-        if (distance >= 70):
+        if distance >= 50:
             pathway = rand.randint(10, distance-40)
-            wallbefore = rand.randint(0, pathway-10)
-            walldistancebefore = pathway - wallbefore
-        else:
-            walldistancebefore = distance
-    
-        pointer.fd(walldistancebefore)
+            if (pathway >= 70):
+                wallbefore = rand.randint(0, pathway-10)
+                walldistancebefore = pathway - wallbefore
+            else:
+                walldistancebefore = distance
+        
+            pointer.fd(walldistancebefore)
 
-        pointer.right(90)
-        pointer.fd(40)
-        pointer.left(180)
-        pointer.fd(40)
-        pointer.right(90)
+            pointer.right(90)
+            pointer.fd(40)
+            pointer.left(180)
+            pointer.fd(40)
+            pointer.right(90)
 
-        pointer.fd(pathway-walldistancebefore)
+            pointer.fd(pathway-walldistancebefore)
 
-        pointer.penup()
-        pointer.fd(30)
-        pointer.pendown()
+            pointer.penup()
+            pointer.fd(30)
+            pointer.pendown()
 
-        pointer.fd(len-pathway)
+            pointer.fd(len-pathway)
 
     startingPosition(pointer)
 
