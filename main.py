@@ -6,8 +6,7 @@ wn.setup(500,500)
 
 mazePointer = t.Turtle()
 mazePointer.pensize(8)
-#mazePointer.speed(0)
-
+mazePointer.speed(0)
 
 def drawMaze(pointer):
     len = 400
@@ -21,28 +20,28 @@ def drawMaze(pointer):
         pointer.pendown()
 
     def wall(distance):
-        if (distance >= 50):
+        if (distance >= 70):
             pathway = rand.randint(10, distance-40)
-            wallbefore = rand.randint(10, pathway-10)
-            wallafter = rand.randint(pathway+10, distance-10)
-
+            wallbefore = rand.randint(0, pathway-10)
             walldistancebefore = pathway - wallbefore
+        else:
+            walldistancebefore = distance
+    
+        pointer.fd(walldistancebefore)
 
-            pointer.fd(walldistancebefore)
+        pointer.right(90)
+        pointer.fd(40)
+        pointer.left(180)
+        pointer.fd(40)
+        pointer.right(90)
 
-            pointer.right(90)
-            pointer.fd(wall_distance)
-            pointer.left(180)
-            pointer.fd(wall_distance)
-            pointer.right(90)
+        pointer.fd(pathway-walldistancebefore)
 
-            pointer.fd(pathway-walldistancebefore)
+        pointer.penup()
+        pointer.fd(30)
+        pointer.pendown()
 
-            pointer.penup()
-            pointer.fd(30)
-            pointer.pendown()
-
-            pointer.fd(len-pathway)
+        pointer.fd(len-pathway)
 
     startingPosition(pointer)
 
