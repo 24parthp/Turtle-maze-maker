@@ -66,16 +66,41 @@ def drawMaze(pointer):
     powerup()
 
 def player(pointer):
+    movementSpeed = 10
+
     def startingPosition():
         pointer.hideturtle()
         pointer.penup()
-        pointer.goto(220, 0)
+        pointer.goto(0, 200)
         pointer.pendown()
         pointer.color("blue")
-        pointer.circle(10)
+        pointer.pensize(10)
+        pointer.circle(5)
+        
+    def move(key):
+        if key == 'w':
+            pointer.seth(90)
+            pointer.fd(movementSpeed)
+        if key == 'a':
+            pointer.seth(180)
+            pointer.fd(movementSpeed)
+        if key == 's':
+            pointer.seth(270)
+            pointer.fd(movementSpeed)
+        if key == 'd':
+            pointer.seth(0)
+            pointer.fd(movementSpeed)
+    
+    wn.onkey(lambda: move('w'), 'w')
+    wn.onkey(lambda: move('a'), 'a')
+    wn.onkey(lambda: move('s'), 's')
+    wn.onkey(lambda: move('d'), 'd')
+    
     
     startingPosition()
 
 drawMaze(mazePointer)
+player(playerPointer)
 
+wn.listen()
 wn.mainloop()
