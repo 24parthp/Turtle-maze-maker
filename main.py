@@ -6,11 +6,12 @@ from tkinter import *
 wn = t.Screen()
 wn.setup(500,500)
 
-mazePointer, playerPointer = t.Turtle(), t.Turtle()
+mazePointer, playerPointer, powerupPointer = t.Turtle(), t.Turtle(), t.Turtle()
 mazePointer.pensize(8)
 mazePointer.speed(0) , playerPointer.speed(0)
 
 powerup_amount = 0
+powerupActive = False
 
 def drawMaze(pointer):
     len = 400
@@ -57,6 +58,8 @@ def drawMaze(pointer):
         wall(len)
         len-= wall_distance
         pointer.right(90)
+    
+    pointer.penup()
 
 class powerup:
     def __init__(self, pointer):
@@ -67,12 +70,14 @@ class powerup:
         self.pointer.penup()
         self.pointer.goto(self.xpos, self.ypos)
         self.pointer.pendown()
+        self.pointer.turtlesize(0.5)
         self.pointer.color("red")
-        self.pointer.circle(2)
+        self.pointer.shape('circle')
     
     # def capture(self):
 
 def player(pointer):
+    
     movementSpeed = 10
 
     def startingPosition():
@@ -87,6 +92,8 @@ def player(pointer):
         return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
     
     def move(key):
+        global powerup_amount
+
         if key == 'w':
             pointer.seth(90)
             pointer.fd(movementSpeed)
@@ -101,7 +108,9 @@ def player(pointer):
             pointer.fd(movementSpeed)
 
         if(dist(pointer.xcor(), pointer.ycor(), powerup1.xpos, powerup1.ypos) < 11):
-            print('yes it works')
+            powerup_amount = powerup_amount + 1
+            powerupPointer.hideturtle()
+
 
         wn.ontimer(lambda: update_powerup_label(label2), 100)
     
@@ -115,19 +124,46 @@ def player(pointer):
 def powerupWn():
     global label2
 
+    def execute():
+        global powerupActive, powerup_amount
+        
+        if powerup_amount != 0:
+            powerupActive = True
+            powerup_amount = 0
+            update_powerup_label(label2)
+
     window = Tk()
     window.geometry('200x100+400+400')
 
     label = Label(window, text='Number of Powerups:', font=('Arial', 15))
     label2 = Label(window, text=str(powerup_amount), font=('Arial', 25))
+    button = Button(window, text="Use Power UP", command=execute)
 
     label.pack()
     label2.pack()
+    button.pack()
 
 def update_powerup_label(label):
     label.config(text=str(powerup_amount))
 
-powerup1 = powerup(mazePointer)
+def powerupUse(x, y):
+    global powerupActive
+
+    if powerupActive == True:
+        mazePointer.goto(x ,y)
+        mazePointer.showturtle()
+        mazePointer.pendown()
+        mazePointer.turtlesize(4)
+        mazePointer.color('white')
+        mazePointer.shape('circle')
+        mazePointer.penup()
+        powerupActive = False
+    else:
+        return
+
+powerup1 = powerup(powerupPointer)
+
+wn.onscreenclick(powerupUse)
 
 drawMaze(mazePointer)
 powerup1.draw()
